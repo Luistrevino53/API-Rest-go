@@ -2,7 +2,7 @@ package album
 
 import(
 	"net/http"
-	"API-REST/logger"
+	"../logger"
 	"github.com/gorilla/mux"
 )
 

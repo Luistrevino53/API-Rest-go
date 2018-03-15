@@ -1,12 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+
+	"./album"
+
+	"github.com/gorilla/handlers"
+)
 
 func main() {
-	fmt.Println("Escribe un numero...")
-	var num int
-	fmt.Scanln(*num)
+	router := album.NewRouter()
 
-	//var menor, resultado int
-	fmt.Println(num)
+	//these two lines are important in order to allow access from the front-end side
+	//to the methods
+	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
+
+	//launch server with CORS validations
+	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(allowedOrigins, allowedMethods)(router)))
 }
