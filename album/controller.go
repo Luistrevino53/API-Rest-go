@@ -90,3 +90,18 @@ func (c *Controller) UpdateAlbum(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusOk)
 	return
 }
+
+//DeleteAlbum DELETE /
+func (c *Controller) DeleteAlbum(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	if err := c.Repository.DeleteAlbum(id); err != "" {
+		if strings.Contains(err, "404"){
+			w.WriteHeader(http.StatusNotFound)
+		} else if strings.Contains(err, "500") {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		return
+	}
+}
